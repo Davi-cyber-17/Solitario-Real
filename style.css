@@ -1,0 +1,445 @@
+/* ==========================================================
+   Paciência — tema tecnológico + layout responsivo
+   ========================================================== */
+
+:root {
+  --pad: 12px;
+  --chrome: 140px;   /* altura aproximada do cabeçalho (ajustada por media query) */
+  --vh100: 100vh;
+
+  /* largura da carta: limitada pela largura E pela altura da tela */
+  --w: calc((100vw - 2 * var(--pad) - env(safe-area-inset-left, 0px) - env(safe-area-inset-right, 0px)) / 7.8);
+  --cw: clamp(38px, min(var(--w), calc((var(--vh100) - var(--chrome)) / 7.4)), 120px);
+  --ch: calc(var(--cw) * 1.42);
+  --gap: calc(var(--cw) * 0.12);
+
+  --bg: #050a14;
+  --panel: rgba(13, 22, 38, 0.72);
+  --line: rgba(80, 200, 255, 0.24);
+  --cyan: #35e0f0;
+  --ice: #d4ecff;
+  --pink: #ff4f8f;
+  --card-top: #16263f;
+  --card-bottom: #0b1425;
+}
+
+@supports (height: 100dvh) {
+  :root { --vh100: 100dvh; }
+}
+
+* { box-sizing: border-box; }
+
+[hidden] { display: none !important; }
+
+html, body { margin: 0; }
+html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+
+body {
+  min-height: 100vh;
+  min-height: var(--vh100);
+  color: var(--ice);
+  font-family: "Rajdhani", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  background:
+    radial-gradient(900px 520px at 12% -10%, rgba(53, 224, 240, 0.15), transparent 60%),
+    radial-gradient(800px 520px at 100% 110%, rgba(255, 79, 143, 0.13), transparent 60%),
+    var(--bg);
+  background-attachment: fixed;
+  overflow-x: hidden;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* grade de circuito ao fundo */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background-image:
+    linear-gradient(rgba(80, 200, 255, 0.07) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(80, 200, 255, 0.07) 1px, transparent 1px);
+  background-size: 38px 38px;
+  -webkit-mask-image: radial-gradient(ellipse at 50% 40%, #000 25%, transparent 85%);
+  mask-image: radial-gradient(ellipse at 50% 40%, #000 25%, transparent 85%);
+}
+
+/* ===== Barra superior ===== */
+.bar {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px 20px;
+  width: calc(100% - 2 * var(--pad));
+  max-width: max(620px, calc(var(--cw) * 7.8));
+  margin: calc(10px + env(safe-area-inset-top, 0px)) auto 0;
+  padding: 10px 14px;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  box-shadow: 0 0 24px rgba(53, 224, 240, 0.08), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+}
+
+.bar h1 {
+  margin: 0;
+  font-family: "Orbitron", "Rajdhani", sans-serif;
+  font-size: 1.35rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  color: var(--cyan);
+  text-shadow: 0 0 14px rgba(53, 224, 240, 0.55);
+}
+
+.stats {
+  display: flex;
+  gap: 8px;
+  margin: 0;
+}
+.stats div {
+  display: flex;
+  flex-direction: column;
+  min-width: 4.4rem;
+  padding: 3px 12px;
+  border-left: 2px solid var(--cyan);
+  background: rgba(53, 224, 240, 0.06);
+  border-radius: 0 8px 8px 0;
+}
+.stats dt { font-size: 0.72rem; opacity: 0.65; line-height: 1.2; }
+.stats dd {
+  margin: 0;
+  font-family: "Orbitron", "Rajdhani", sans-serif;
+  font-size: 1rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+
+.actions button,
+.select select,
+dialog button {
+  min-height: 38px;
+  padding: 6px 14px;
+  font-family: inherit;
+  font-size: 0.95rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: var(--ice);
+  background: rgba(53, 224, 240, 0.07);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  cursor: pointer;
+  touch-action: manipulation;
+  transition: border-color 0.15s, box-shadow 0.15s, background 0.15s;
+}
+.actions button:hover:not(:disabled),
+.select select:hover {
+  border-color: var(--cyan);
+  box-shadow: 0 0 14px rgba(53, 224, 240, 0.35);
+}
+.actions button:disabled { opacity: 0.35; cursor: default; }
+
+button.primary {
+  background: var(--cyan);
+  border-color: var(--cyan);
+  color: #03121a;
+}
+.actions button.primary:hover:not(:disabled) { background: #6ff0fa; }
+
+.select { display: flex; align-items: center; gap: 8px; font-size: 0.95rem; }
+.select select { padding-right: 8px; }
+.select option { background: #0d1626; color: var(--ice); }
+
+button:focus-visible,
+select:focus-visible { outline: 2px solid var(--cyan); outline-offset: 2px; }
+
+/* ===== Mesa ===== */
+.board {
+  position: relative;
+  z-index: 1;
+  width: max-content;
+  margin: 18px auto 0;
+  padding-bottom: 60px;
+  display: grid;
+  row-gap: calc(var(--cw) * 0.3);
+}
+
+.row {
+  display: grid;
+  grid-template-columns: repeat(7, var(--cw));
+  column-gap: var(--gap);
+  align-items: start;
+}
+
+.pile {
+  position: relative;
+  width: var(--cw);
+  height: var(--ch);
+  border-radius: calc(var(--cw) * 0.1);
+  transition: box-shadow 0.15s;
+}
+
+/* espaço vazio */
+.pile::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: var(--ch);
+  border-radius: inherit;
+  border: 1px solid rgba(53, 224, 240, 0.28);
+  background: rgba(53, 224, 240, 0.04);
+  box-shadow: inset 0 0 calc(var(--cw) * 0.25) rgba(53, 224, 240, 0.1);
+}
+
+.pile.drop-ok {
+  box-shadow: 0 0 0 2px var(--cyan), 0 0 24px rgba(53, 224, 240, 0.55);
+}
+
+/* marcador "A" nas fundações vazias */
+.found:empty::after {
+  content: "A";
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: var(--ch);
+  display: grid;
+  place-items: center;
+  font-family: "Orbitron", sans-serif;
+  font-size: calc(var(--cw) * 0.42);
+  color: rgba(53, 224, 240, 0.3);
+}
+
+/* monte */
+#stock { cursor: pointer; }
+#stock::after { display: none; position: absolute; }
+#stock[data-count]:not([data-count=""])::after {
+  content: attr(data-count);
+  display: grid;
+  place-items: center;
+  right: calc(var(--cw) * -0.1);
+  bottom: calc(var(--cw) * -0.1);
+  min-width: 1.8em;
+  height: 1.8em;
+  padding: 0 0.4em;
+  border-radius: 999px;
+  background: var(--cyan);
+  color: #03121a;
+  font-family: "Orbitron", sans-serif;
+  font-size: calc(var(--cw) * 0.18);
+  font-weight: 700;
+  box-shadow: 0 0 12px rgba(53, 224, 240, 0.6);
+  pointer-events: none;
+}
+#stock.recycle::after {
+  content: "↺";
+  display: grid;
+  place-items: center;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: var(--ch);
+  font-size: calc(var(--cw) * 0.55);
+  color: rgba(53, 224, 240, 0.7);
+  text-shadow: 0 0 14px rgba(53, 224, 240, 0.6);
+}
+
+/* ===== Cartas ===== */
+.card {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: var(--cw);
+  height: var(--ch);
+  border-radius: calc(var(--cw) * 0.1);
+  background: linear-gradient(155deg, var(--card-top) 0%, var(--card-bottom) 75%);
+  border: 1px solid rgba(120, 200, 255, 0.3);
+  color: var(--ice);
+  font-family: "Rajdhani", system-ui, sans-serif;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.6);
+  overflow: hidden;
+  cursor: grab;
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
+}
+.card.red {
+  color: var(--pink);
+  border-color: rgba(255, 79, 143, 0.45);
+}
+
+.corner {
+  position: absolute;
+  display: flex;
+  align-items: baseline;
+  gap: 0.05em;
+  line-height: 1;
+  font-size: calc(var(--cw) * 0.29);
+}
+.corner b { font-weight: 700; }
+.corner i { font-style: normal; font-size: 0.85em; }
+.corner.tl { left: calc(var(--cw) * 0.07); top: calc(var(--cw) * 0.04); }
+.corner.br { right: calc(var(--cw) * 0.07); bottom: calc(var(--cw) * 0.04); transform: rotate(180deg); }
+
+.pip {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding-top: calc(var(--cw) * 0.12);
+  font-size: calc(var(--cw) * 0.58);
+  line-height: 1;
+  text-shadow: 0 0 0.35em currentColor;
+}
+
+/* verso: placa de circuito */
+.card.down {
+  background: #0a1322;
+  border: 1px solid rgba(53, 224, 240, 0.5);
+  cursor: default;
+}
+.card.down::before {
+  content: "";
+  position: absolute;
+  inset: calc(var(--cw) * 0.07);
+  border-radius: calc(var(--cw) * 0.06);
+  border: 1px solid rgba(53, 224, 240, 0.25);
+  background:
+    radial-gradient(circle at 50% 50%, rgba(53, 224, 240, 0.55) 0 calc(var(--cw) * 0.05), transparent calc(var(--cw) * 0.06)),
+    radial-gradient(circle at 50% 50%, rgba(53, 224, 240, 0.18), transparent 70%),
+    linear-gradient(rgba(53, 224, 240, 0.16) 1px, transparent 1px) 0 0 / calc(var(--cw) * 0.16) calc(var(--cw) * 0.16),
+    linear-gradient(90deg, rgba(53, 224, 240, 0.16) 1px, transparent 1px) 0 0 / calc(var(--cw) * 0.16) calc(var(--cw) * 0.16);
+}
+#stock .card.down { cursor: pointer; }
+
+/* arrastar */
+.card.lifted { visibility: hidden; }
+
+.ghost {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: var(--cw);
+  z-index: 1000;
+  pointer-events: none;
+  will-change: transform;
+}
+.ghost .card {
+  cursor: grabbing;
+  box-shadow: 0 0 0 1px var(--cyan), 0 0 22px rgba(53, 224, 240, 0.55), 0 14px 28px rgba(0, 0, 0, 0.6);
+}
+
+/* ===== Vitória ===== */
+dialog {
+  border: 1px solid var(--cyan);
+  border-radius: 16px;
+  padding: 28px 32px;
+  max-width: min(340px, calc(100vw - 32px));
+  text-align: center;
+  background: #0b1626;
+  color: var(--ice);
+  box-shadow: 0 0 40px rgba(53, 224, 240, 0.35);
+}
+dialog::backdrop {
+  background: rgba(2, 6, 14, 0.7);
+  -webkit-backdrop-filter: blur(4px);
+  backdrop-filter: blur(4px);
+}
+dialog h2 {
+  margin: 0 0 8px;
+  font-family: "Orbitron", sans-serif;
+  font-size: 1.5rem;
+  color: var(--cyan);
+  text-shadow: 0 0 14px rgba(53, 224, 240, 0.55);
+}
+dialog p { margin: 0 0 20px; font-size: 1.05rem; line-height: 1.45; }
+dialog button.primary { padding: 8px 22px; min-height: 42px; }
+
+#confetti {
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 50;
+}
+#confetti span {
+  position: absolute;
+  top: -50px;
+  color: var(--cyan);
+  text-shadow: 0 0 10px currentColor;
+  animation: fall linear infinite;
+}
+#confetti span.red { color: var(--pink); }
+
+@keyframes fall {
+  to { transform: translateY(115vh) rotate(360deg); }
+}
+
+/* ==========================================================
+   Responsivo
+   ========================================================== */
+
+/* celulares em pé */
+@media (max-width: 560px) {
+  :root { --pad: 8px; }
+  .bar { gap: 8px 12px; padding: 8px 10px; }
+  .bar h1 { font-size: 1.1rem; }
+  .stats { gap: 6px; }
+  .stats div { min-width: 0; padding: 2px 9px; }
+  .stats dd { font-size: 0.9rem; }
+  .actions { width: 100%; justify-content: space-between; gap: 6px; }
+  .actions button, .select select { padding: 6px 10px; font-size: 0.88rem; }
+  .board { margin-top: 12px; }
+}
+
+/* telas muito estreitas */
+@media (max-width: 360px) {
+  .select { font-size: 0; gap: 0; }   /* esconde o rótulo "Comprar", mantém o seletor */
+  .select select { font-size: 0.85rem; }
+  .actions button { padding: 6px 8px; }
+}
+
+/* celulares deitados / telas baixas: cabeçalho numa linha só */
+@media (max-height: 520px) {
+  :root { --chrome: 72px; }
+  .bar {
+    flex-wrap: nowrap;
+    max-width: none;
+    width: calc(100% - 2 * var(--pad) - env(safe-area-inset-left, 0px) - env(safe-area-inset-right, 0px));
+    padding: 5px 12px;
+    margin-top: calc(6px + env(safe-area-inset-top, 0px));
+  }
+  .bar h1 { font-size: 1rem; }
+  .stats div { flex-direction: row; align-items: baseline; gap: 6px; padding: 2px 9px; }
+  .actions { width: auto; }
+  .actions button, .select select { min-height: 32px; padding: 4px 10px; font-size: 0.85rem; }
+  .board { margin-top: 10px; row-gap: calc(var(--cw) * 0.2); padding-bottom: 24px; }
+}
+
+/* telas de toque: alvos maiores */
+@media (pointer: coarse) {
+  .actions button, .select select { min-height: 42px; }
+}
+@media (pointer: coarse) and (max-height: 520px) {
+  .actions button, .select select { min-height: 36px; }
+}
+
+/* telas grandes */
+@media (min-width: 1400px) and (min-height: 900px) {
+  .bar h1 { font-size: 1.6rem; }
+  .stats dd { font-size: 1.15rem; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #confetti { display: none; }
+  .pile, .actions button, .select select { transition: none; }
+}

@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#050a14">
+  <meta name="color-scheme" content="dark">
+  <title>Solitário Real</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;800&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <header class="bar">
+    <h1>Solitário Real</h1>
+
+    <dl class="stats">
+      <div><dt>Pontos</dt><dd id="score">0</dd></div>
+      <div><dt>Movimentos</dt><dd id="moves">0</dd></div>
+      <div><dt>Tempo</dt><dd id="time">0:00</dd></div>
+    </dl>
+
+    <div class="actions">
+      <label class="select">Comprar
+        <select id="drawMode">
+          <option value="1">1 carta</option>
+          <option value="3">3 cartas</option>
+        </select>
+      </label>
+      <button id="btnUndo" type="button" disabled>Desfazer</button>
+      <button id="btnAuto" type="button" hidden>Auto-completar</button>
+      <button id="btnNew" type="button" class="primary">Novo jogo</button>
+    </div>
+  </header>
+
+  <main class="board" id="board">
+    <div class="row">
+      <div class="pile" id="stock" data-pile="stock" title="Comprar carta"></div>
+      <div class="pile" id="waste" data-pile="waste"></div>
+      <div class="spacer"></div>
+      <div class="pile found" id="f0" data-pile="f0"></div>
+      <div class="pile found" id="f1" data-pile="f1"></div>
+      <div class="pile found" id="f2" data-pile="f2"></div>
+      <div class="pile found" id="f3" data-pile="f3"></div>
+    </div>
+
+    <div class="row">
+      <div class="pile" id="t0" data-pile="t0"></div>
+      <div class="pile" id="t1" data-pile="t1"></div>
+      <div class="pile" id="t2" data-pile="t2"></div>
+      <div class="pile" id="t3" data-pile="t3"></div>
+      <div class="pile" id="t4" data-pile="t4"></div>
+      <div class="pile" id="t5" data-pile="t5"></div>
+      <div class="pile" id="t6" data-pile="t6"></div>
+    </div>
+  </main>
+
+  <div id="confetti" aria-hidden="true"></div>
+
+  <dialog id="winDialog">
+    <h2>Você venceu!</h2>
+    <p id="winStats"></p>
+    <button id="btnAgain" type="button" class="primary">Jogar de novo</button>
+  </dialog>
+
+  <script src="script.js"></script>
+</body>
+</html>
